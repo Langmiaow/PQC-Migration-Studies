@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>Login demo</title>
+        <script>
+            async function login() {
+                const user = document.getElementById('user').value;
+                const pw = document.getElementById('pw').value;
+
+                const res = await fetch('http://127.0.0.1:3000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: user,
+                        password: pw
+                    })
+                })
+                
+                const data = await res.json();
+                document.getElementById("token").value = data.signature;
+            }
+
+            async function verify() {
+                const signature = document.getElementById("token").value;
+                const payload = {
+                    username: document.getElementById('user').value,
+                    password: document.getElementById('pw').value
+                };
+
+                const res = await fetch('http://127.0.0.1:3000/protected', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        payload: payload,
+                        signature: signature
+                    })
+                });
+                
+                if (res.status === 200) {
+                    alert("Verified :)")
+                } else {
+                    alert("Something wrong :(")
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <center>
+            <table>
+                <tr>
+                    <td>
+                        Username:
+                    </td>
+                    <td>
+                        <input type="text" id="user">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Password:
+                    </td>
+                    <td>
+                        <input type="text" id="pw">
+                    </td>
+                </tr>
+            </table>
+            <button onclick="login()">Login</button>
+            <br>
+            <br>
+            <textarea id="token" style="width: 500px; height: 200;" autocomplete="off"></textarea>
+            <br>
+            <button onclick="verify()">Verify</button>
+        </center>
+    </body>
+</html>
