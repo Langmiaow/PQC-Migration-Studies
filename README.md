@@ -40,7 +40,7 @@ The server will run at `localhost:3000`.
 Note that changing any of the content in user details or signature will cause a failure of verification.
 
 ---
-`ML-KEM-demo.js` demonsrates the **Key Encapsulation Mechanism**. Bob uses Alice's public key to encapulate a `sharedKey`, resulting in a `chiphertext`. Alice then uses her private key to decapulate the `ciphertext` and retrieve the exact same `sharedKey`.
+`ML-KEM-demo.js` demonsrates the **Key Encapsulation Mechanism**. Bob uses Alice's public key to encapulate a `sharedKey`, resulting in a `ciphertext`. Alice then uses her private key to decapulate the `ciphertext` and retrieve the exact same `sharedKey`.
 
 ## Observation
 **Big but Fast**: A standard RSA-2048 signature is about 256 bytes. In contrast, the ML-DSA-65 signature is approximately 3,300 bytes, which is over 10 times larger. This may be in risk oversizing some http header limitations. Despite its huge size, the mathematical operations are very fast - no noticeable latency. 
