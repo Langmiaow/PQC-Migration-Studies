@@ -63,7 +63,7 @@ It now supports switching between ML-DSA and SLH-DSA.
 
 Run:
 ```
-node ML-DSA-demo.js
+node DSA-demo.js
 ```
 The server will run at `localhost:3000`.
 
