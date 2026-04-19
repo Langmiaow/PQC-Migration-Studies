@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-var publicKey = '';
+var storedPublicKey = '';
 
 app.post('/login', (req, res) => {
     const { username, password, algorithm } = req.body;
@@ -20,16 +20,16 @@ app.post('/login', (req, res) => {
 
         if (algorithm === 'ml') {
             const { publicKey, privateKey } = crypto.generateKeyPairSync('ml-dsa-65');
-            this.publicKey = publicKey;
+            storedPublicKey = publicKey;
             const signature = crypto.sign(null, data, privateKey);
 
             res.json({
                 payload: payload,
                 signature: signature.toString('base64')
-            }).send();
+            });
         } else if (algorithm === 'slh') {
             const { publicKey, privateKey } = crypto.generateKeyPairSync('slh-dsa-sha2-128s');
-            this.publicKey = publicKey;
+            storedPublicKey = publicKey;
             const signature = crypto.sign(null, data, privateKey);
 
             res.json({
@@ -53,7 +53,7 @@ app.post('/protected', (req, res) => {
     const dataToVerify = Buffer.from(JSON.stringify(payload));
     const signatureBuffer = Buffer.from(signature, 'base64');
 
-    const isValid = crypto.verify(null, dataToVerify, this.publicKey, signatureBuffer);
+    const isValid = crypto.verify(null, dataToVerify, storedPublicKey, signatureBuffer);
 
     if (isValid) {
         res.status(200).send("Verified!");
